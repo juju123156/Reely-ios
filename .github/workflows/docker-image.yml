@@ -1,4 +1,5 @@
-name: "Continuous Integration - Spring App"
+
+name: "CI/CD frontend+ios"
 on:
   push:
     branches:
@@ -6,28 +7,18 @@ on:
 
 jobs:
   code-build:
-    runs-on: ubuntu-22.04
+    runs-on: macos-latest
     permissions:
       id-token: write
       contents: read
     steps:
-    - uses: actions/checkout@v3
-      name: Set up JDK 17
-    - uses: actions/setup-java@v3
-      with: 
-        distribution: 'temurin'
-        java-version: '17'
+    - name: Checkout Code
+      uses: actions/checkout@v2
 
-    - name: init with Gradle
-      uses: gradle/gradle-build-action@v2
-
-    - name: Build with Gradle
-      run: cd backend/Reely && ./gradlew build
-      
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v3
       with:
-        role-to-assume: arn:aws:iam::673004107015:role/ECR_OIDC_ROLE
+        role-to-assume: arn:aws:iam::673004107015:role/ECR_ROLE_Reely-ios
         aws-region: ap-northeast-2
     - name: Login to Amazon ECR
       id: login-ecr
@@ -37,14 +28,14 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ns-reely-ecr
+        ECR_REPOSITORY: ns-reely-ecr/reely-ios
         IMAGE_TAG: ${{ github.sha }}
       run: |
-          pwd
-          ls
-          cd backend/Reely
-          pwd
-          ls
-          docker build -f /backend/Reely --platform arm64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG /backend/Reely
+          docker build -f Reely/.dockerfile --platform arm64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG Reely/.
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+    
+    - name: Build iOS App
+      run: |
+        cd Reely/ios
+        xcodebuild -scheme Reely -sdk iphonesimulator -configuration Debug
