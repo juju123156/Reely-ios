@@ -35,8 +35,8 @@ jobs:
         role-to-assume: arn:aws:iam::673004107015:role/ECR_ROLE_Reely-ios
         aws-region: ap-northeast-2
     - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+      run: aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 673004107015.dkr.ecr.ap-northeast-2.amazonaws.com
+
       
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
