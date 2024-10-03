@@ -25,6 +25,8 @@ jobs:
       run: |
         brew install --cask docker
         open /Applications/Docker.app
+        brew install docker-credential-helper
+        brew install awscli
         sleep 30  # Docker가 시작될 때까지 기다림
 
     - name: Configure AWS credentials
