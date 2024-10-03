@@ -43,7 +43,9 @@ jobs:
         role-to-assume: arn:aws:iam::673004107015:role/ECR_ROLE_Reely-ios
         aws-region: ap-northeast-2
     - name: Login to Amazon ECR
-      run: aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 673004107015.dkr.ecr.ap-northeast-2.amazonaws.com
+      run: |
+        echo '{"credHelpers":{"673004107015.dkr.ecr.ap-northeast-2.amazonaws.com":"ecr-login"}}' > ~/.docker/config.json
+        aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 673004107015.dkr.ecr.ap-northeast-2.amazonaws.com
 
       
     - name: Build, tag, and push image to Amazon ECR
