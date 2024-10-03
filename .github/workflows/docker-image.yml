@@ -45,6 +45,7 @@ jobs:
     - name: Login to Amazon ECR
       run: |
         echo '{"credHelpers":{"673004107015.dkr.ecr.ap-northeast-2.amazonaws.com":"ecr-login"}}' > ~/.docker/config.json
+        echo '{"credsStore": ""}' > ~/.docker/config.json
         aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 673004107015.dkr.ecr.ap-northeast-2.amazonaws.com
 
       
