@@ -2,23 +2,9 @@
 FROM node:20.17.0
 
 # 작업 디렉토리 설정
-WORKDIR /app
-
-# React Native CLI 설치
-RUN npm install -g react-native-cli
-
-# React Native 프로젝트 생성
-RUN npx react-native init Reely --skip-install 
-
-
-# 작업 디렉토리 설정
 WORKDIR /app/Reely
 
-# 종속성 설치
-COPY package.json yarn.lock ./
-
-RUN yarn install && \
-cd ios && \
+RUN cd ios && \
 bundle install && \
 bundle exec pod install
 
