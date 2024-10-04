@@ -72,6 +72,13 @@ jobs:
             key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         - name: Install Dependencies
           run: yarn
+        
+        - name: Set up Ruby
+          uses: ruby/setup-ruby@v1
+          with:
+            ruby-version: '2.7.5'
+            bundler-cache: true   # Bundler 캐시를 사용하려면 true로 설정
+            
         - name: Install Podfiles
           run: cd Reely/ios && bundle install && bundle exec pod install
         - name: Build  app
