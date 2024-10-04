@@ -80,11 +80,13 @@ jobs:
           with:
             ruby-version: '2.7.5'
             bundler-cache: true   # Bundler 캐시를 사용하려면 true로 설정
-            
-        - name: Install Podfiles
-          run: cd Reely/ios && pod install
 
-        - name: Build iOS App
-          run: |
-            cd Reely/ios && xcodebuild -scheme Reely -sdk iphonesimulator -configuration Debug
+        - name: Install Fastlane
+          run: cd Reely/ios && bundle install && cd ..
+         
+        - name: Install Podfiles
+          run: cd Reely/ios && bundle install && pod install && cd ..
+
+        - name: Execute Fastlane command
+          run: cd Reely/ios && fastlane github
             
