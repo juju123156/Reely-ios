@@ -7,40 +7,41 @@ on:
 
 jobs:
   code-build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+       node-version: [20]
     permissions:
       id-token: write
       contents: read
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
-  
-    - name: Set Docker Host
-      run: echo "DOCKER_HOST=unix:///var/run/docker.sock" >> $GITHUB_ENV
       
-    - name: Install Homebrew (if not installed)
-      run: |
-        if ! command -v brew &> /dev/null; then
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        fi
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
-    - name: Install AWS CLI
-      run: brew install awscli  # AWS CLI 설치
+    - uses: actions/setup-node@v1
+      with:
+       node-version: ${{ matrix.node-version }}
+       
+    - name: Get yarn cache
+      id: yarn-cache
+      run: echo "::set-output name=dir::$(yarn cache dir)"
       
+    - uses: actions/cache@v2
+      with:
+        path: ${{ steps.yarn-cache.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        
+    - name: Install Dependencies
+      run: yarn
     - name: Configure AWS credentials
+    
       uses: aws-actions/configure-aws-credentials@v3
       with:
         role-to-assume: arn:aws:iam::673004107015:role/ECR_ROLE_Reely-ios
         aws-region: ap-northeast-2
     - name: Login to Amazon ECR
-      run: |
-        echo '{"credHelpers":{"673004107015.dkr.ecr.ap-northeast-2.amazonaws.com":"ecr-login"}}' > ~/.docker/config.json
-        echo '{"credsStore": ""}' > ~/.docker/config.json
-        aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 673004107015.dkr.ecr.ap-northeast-2.amazonaws.com
-
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
       
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
@@ -53,8 +54,31 @@ jobs:
           docker buildx build -f Reely/.dockerfile --platform arm64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG Reely/.
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-    
-    - name: Build iOS App
-      run: |
-        cd Reely/ios
-        xcodebuild -scheme Reely -sdk iphonesimulator -configuration Debug
+  ios:
+      runs-on: macos-latest
+      strategy:
+        matrix:
+          node-version: [20]
+      steps:
+        - uses: actions/checkout@v2
+        - uses: actions/setup-node@v1
+          with:
+            node-version: ${{ matrix.node-version }}
+        - name: Get yarn cache
+          id: yarn-cache
+          run: echo "::set-output name=dir::$(yarn cache dir)"
+        - uses: actions/cache@v2
+          with:
+            path: ${{ steps.yarn-cache.outputs.dir }}
+            key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        - name: Install Dependencies
+          run: yarn
+        - name: Install Podfiles
+          run: cd Reely/ios && npx pod-install
+        - name: Build example app
+          run: yarn ios
+       
+        - name: Build iOS App
+          run: |
+            cd Reely/ios && xcodebuild -scheme Reely -sdk iphonesimulator -configuration Debug
+            
