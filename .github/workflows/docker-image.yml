@@ -34,6 +34,7 @@ jobs:
     - name: Install Dependencies
       run: | 
         npm install -g jetify
+        sleep 100
         yarn && npx jetify
       
     - name: Configure AWS credentials
