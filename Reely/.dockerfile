@@ -4,8 +4,6 @@ FROM node:20.17.0
 # 작업 디렉토리 설정
 WORKDIR /app
 
-RUN mkdir -p /app/logs
-
 # React Native CLI 설치
 RUN npm install -g react-native-cli
 
