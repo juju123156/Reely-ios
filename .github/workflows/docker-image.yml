@@ -71,7 +71,9 @@ jobs:
             path: ${{ steps.yarn-cache.outputs.dir }}
             key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         - name: Install Dependencies
-          run: yarn
+          run: |
+            yarn
+            npm install
         
         - name: Set up Ruby
           uses: ruby/setup-ruby@v1
