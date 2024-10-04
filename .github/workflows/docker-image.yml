@@ -73,7 +73,7 @@ jobs:
         - name: Install Dependencies
           run: |
             yarn
-            npm install
+            cd Reely && npm install
         
         - name: Set up Ruby
           uses: ruby/setup-ruby@v1
