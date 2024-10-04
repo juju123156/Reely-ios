@@ -50,8 +50,7 @@ jobs:
         ECR_REPOSITORY: ns-reely-ecr/reely-ios
         IMAGE_TAG: ${{ github.sha }}
       run: |
-          export DOCKER_BUILDKIT=1
-          docker buildx build -f Reely/.dockerfile --platform arm64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG Reely/.
+          docker build -f Reely/.dockerfile --platform arm64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG Reely/.
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
   ios:
