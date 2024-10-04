@@ -17,7 +17,7 @@ RUN npx react-native init Reely --skip-install
 WORKDIR /app/Reely
 
 # 종속성 설치
-COPY Reely/package.json yarn.lock ./
+COPY package.json yarn.lock ./
 
 RUN yarn install && \
 cd ios && \
