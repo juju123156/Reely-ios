@@ -73,8 +73,8 @@ jobs:
         - name: Install Dependencies
           run: yarn
         - name: Install Podfiles
-          run: cd Reely/ios && npx pod-install
-        - name: Build example app
+          run: cd Reely/ios && bundle install && bundle exec pod install
+        - name: Build  app
           run: yarn ios
        
         - name: Build iOS App
