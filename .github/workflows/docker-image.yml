@@ -32,10 +32,7 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         
     - name: Install Dependencies
-      run: | 
-        npm install -g jetify
-        sleep 100
-        yarn && npx jetify
+      run: yarn
       
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v3
