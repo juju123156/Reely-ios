@@ -25,10 +25,10 @@ bundle install && \
 bundle exec pod install
 
 # 소스 코드 복사
-COPY Reely ./
+COPY . .
 
 # 기본 포트 설정
 EXPOSE 19000
 
 # 앱 시작
-CMD ["npm", "start"]
+CMD ["yarn", "start"]

@@ -13,7 +13,19 @@ jobs:
       contents: read
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+
+    - name: Install Homebrew (if not installed)
+      run: |
+        if ! command -v brew &> /dev/null; then
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        fi
+
+    - name: Install Docker
+      run: |
+        brew install --cask docker
+        open /Applications/Docker.app
+        sleep 30  # Docker가 시작될 때까지 기다림
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v3
