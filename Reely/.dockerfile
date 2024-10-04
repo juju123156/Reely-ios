@@ -2,11 +2,9 @@
 FROM node:20.17.0
 
 # 작업 디렉토리 설정
-WORKDIR /app/Reely
+WORKDIR /app/Reely/ios
 
-RUN cd ios && \
-bundle install && \
-bundle exec pod install
+RUN bundle install && bundle exec pod install
 
 # 소스 코드 복사
 COPY . .
