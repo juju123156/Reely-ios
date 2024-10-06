@@ -8,6 +8,9 @@
 module.exports = {
   transformer: {
     getTransformOptions: async () => ({
+      server: {
+        port: 8081,
+      },
       transform: {
         experimentalImportSupport: false,
         inlineRequires: true,
