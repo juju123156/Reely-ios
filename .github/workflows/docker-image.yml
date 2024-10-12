@@ -88,10 +88,10 @@ jobs:
           run: cd Reely/ios && bundle install && pod install && cd ..
         
         - name: Install Fastlane
-        - run: brew install fastlane
+          run: brew install fastlane
         
         - name: Execute Fastlane command
-        - run: cd Reely/ios && fastlane release
+          run: cd Reely/ios && fastlane release
           env:
             MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
             KEYCHAIN_NAME: ${{ secrets.KEYCHAIN_NAME }}
