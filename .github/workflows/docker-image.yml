@@ -87,6 +87,7 @@ jobs:
         - name: Install Podfiles
           run: cd Reely/ios && bundle install && pod install && cd ..
         
+        - name: Install Fastlane
         - run: brew install fastlane
         
         - name: Execute Fastlane command
