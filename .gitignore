@@ -86,3 +86,10 @@ coverage
 !.yarn/versions
 
 .vscode
+
+# iOS 환경변수
+Reely/env/.env.development
+Reely/env/.env.production
+Reely/ios/Config.xcconfig
+Reely/ios/tmp.xcconfig
+Reely/.env
