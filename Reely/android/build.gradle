@@ -19,3 +19,11 @@ buildscript {
         classpath("com.facebook.react:react-native-gradle-plugin")
     }
 }
+
+/** 환경변수 설정 */
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
+/** 개발 환경에 따른 환경변수 config 파일 **/
+project.ext.envConfigFiles = [
+    anothercustombuild: ".env",
+]
