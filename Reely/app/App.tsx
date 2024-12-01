@@ -1,8 +1,11 @@
 // app.tsx
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import axios from 'axios';
 import Config from 'react-native-config';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import FooterNavigation from './components/common/FooterNavigation';
 
 const App = () => {
   const [data, setData] = useState<any>(null);
@@ -14,7 +17,7 @@ const App = () => {
     // API 요청 함수
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/data`); // 여기에 Spring Boot URL과 API 엔드포인트를 넣으세요.
+        const response = await axios.get(`http://localhost:8080/api/data`); // 여기에 Spring Boot URL과 API 엔드포인트를 넣으세요.
         setData(response.data);
       } catch (err) {
         // 에러를 콘솔에 출력
@@ -39,6 +42,7 @@ const App = () => {
   return (
     <View style={styles.container}>
       <Text>{JSON.stringify(data)}</Text>
+      <FooterNavigation/>
     </View>
   );
 };
@@ -47,7 +51,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 
