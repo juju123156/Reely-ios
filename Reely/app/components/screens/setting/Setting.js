@@ -1,6 +1,8 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Divider } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+
 
 // Setting 컴포넌트 (설정 페이지 전체 컨테이너)
 const Setting = ({ children }) => (
@@ -8,18 +10,35 @@ const Setting = ({ children }) => (
 );
 
 // Section 컴포넌트 (각 항목)
-const Section = ({ title, iconSrc, onClick }) => (
-  <View style={styles.section} onClick={onClick}>
-    <Text style={styles.sectionText}>{title}</Text>
+const Section = ({ title, iconSrc, onClick, isActive }) => (
+  <TouchableOpacity style={styles.section} onPress={onClick}>
+    <Text style={[styles.sectionText, isActive && styles.activeText]}>{title}</Text>
     {iconSrc && <Image style={styles.icon} source={iconSrc} />}
-  </View>
+  </TouchableOpacity>
 );
 
 // User 컴포넌트 (사용자 설정 페이지)
 const User = () => {
+  const navigation = useNavigation(); // 페이지 이동을 위한 hook
+  const [activeSection, setActiveSection] = useState(null); // 클릭한 섹션 관리
+
   const arrowIcon = require('@assets/images/icons/arrow.png');
   const profileIcon = require('@assets/images/icons/profile.png');
   const settingIcon = require('@assets/images/icons/setting.png');
+
+  const handleSectionClick = (sectionName) => {
+    setActiveSection(sectionName);
+    // 해당 섹션에 따라 페이지 이동 처리
+    if (sectionName === '이메일 변경') {
+      navigation.navigate('EmailChange'); // 'EmailChange'는 예시, 실제 페이지 이름으로 바꿔야 함
+    } else if (sectionName === '비밀번호 변경') {
+      navigation.navigate('PasswordChange'); // 'PasswordChange'는 예시, 실제 페이지 이름으로 바꿔야 함
+    } else if (sectionName === '사용자 데이터') {
+      navigation.navigate('UserData'); // 'UserData'는 예시, 실제 페이지 이름으로 바꿔야 함
+    } else if (sectionName === '로그아웃') {
+      navigation.navigate('Logout'); // 'Logout'은 예시, 실제 페이지 이름으로 바꿔야 함
+    }
+  };
 
   return (
     <Setting>
@@ -35,21 +54,60 @@ const User = () => {
 
       {/* Divider와 Section */}
       <Divider style={styles.dividerSpace} />
-      <Section title="이메일 변경" iconSrc={arrowIcon} />
+      <Section
+        title="이메일 변경" 
+        iconSrc={arrowIcon}
+        isActive={activeSection === '이메일 변경'}
+        onClick={() => handleSectionClick('이메일 변경')}/>
       <Divider style={styles.divider} />
-      <Section title="비밀번호 변경" iconSrc={arrowIcon} />
+      <Section
+        title="비밀번호 변경"
+        iconSrc={arrowIcon}
+        isActive={activeSection === '비밀번호 변경'}
+        onClick={() => handleSectionClick('비밀번호 변경')}
+      />
       <Divider style={styles.divider} />
-      <Section title="사용자 데이터" iconSrc={arrowIcon} />
+      <Section
+        title="사용자 데이터"
+        iconSrc={arrowIcon}
+        isActive={activeSection === '사용자 데이터'}
+        onClick={() => handleSectionClick('사용자 데이터')}
+      />
       <Divider style={styles.divider} />
-      <Section title="로그아웃" iconSrc={arrowIcon} />
+      <Section
+        title="로그아웃"
+        iconSrc={arrowIcon}
+        isActive={activeSection === '로그아웃'}
+        onClick={() => handleSectionClick('로그아웃')}
+      />
       <Divider style={styles.dividerSpace} />
-      <Section title="알림 설정" iconSrc={arrowIcon} />
-      <Divider style={styles.dividerSpace } />
-      <Section title="FAQ" iconSrc={arrowIcon} />
+      <Section
+        title="알림 설정"
+        iconSrc={arrowIcon}
+        isActive={activeSection === '알림 설정'}
+        onClick={() => handleSectionClick('알림 설정')}
+      />
+      <Divider style={styles.dividerSpace} />
+      <Section
+        title="FAQ"
+        iconSrc={arrowIcon}
+        isActive={activeSection === 'FAQ'}
+        onClick={() => handleSectionClick('FAQ')}
+      />
       <Divider style={styles.divider} />
-      <Section title="약관" iconSrc={arrowIcon} />
+      <Section
+        title="약관"
+        iconSrc={arrowIcon}
+        isActive={activeSection === '약관'}
+        onClick={() => handleSectionClick('약관')}
+      />
       <Divider style={styles.divider} />
-      <Section title="서비스 정보" iconSrc={arrowIcon} />
+      <Section
+        title="서비스 정보"
+        iconSrc={arrowIcon}
+        isActive={activeSection === '서비스 정보'}
+        onClick={() => handleSectionClick('서비스 정보')}
+      />
       <Divider style={styles.divider} />
     </Setting>
   );
@@ -71,6 +129,8 @@ const styles = StyleSheet.create({
     width: 75,
     height: 75,
     borderRadius: 37.5,
+    borderRadius: 15,
+
   },
   userTextContainer: {
     marginLeft: 20,
@@ -82,8 +142,9 @@ const styles = StyleSheet.create({
     color: '#eee',
   },
   userId: {
-    fontSize: 13,
+    fontSize: 14,
     color: '#aaa',
+    paddingTop:4,
   },
   settingsIcon: {
     width: 18,
@@ -99,6 +160,9 @@ const styles = StyleSheet.create({
   sectionText: {
     fontSize: 15,
     color: '#eee',
+  },
+  activeText: {
+    color: '#337EFF', // 클릭한 항목의 색상 (예: 파란색)
   },
   icon: {
     width: 9,
