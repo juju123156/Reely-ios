@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Switch, Alert, Dimensions } from 'react-native';
 import axios from 'axios';  // axios 임포트
 import { useNavigation } from '@react-navigation/native';
+import Config from 'react-native-config';
 
 const Login = () => {
   const navigation = useNavigation();  // useNavigation 훅을 사용하여 네비게이션 객체 가져오기
@@ -22,11 +23,11 @@ const Login = () => {
         keepLoggedIn,
       };
 
-      const response = await axios.post('http://localhost:8080/api/auth/login', params);
+      const response = await axios.post(`${Config.BASE_URL}/api/auth/login`, params);
 
       if (response.status === 200) {
         console.log('로그인 성공:', response.data);
-        navigation.navigate('Main'); // 'Home'은 이동하려는 화면의 이름
+        navigation.navigate('Main'); // 'Main'은 이동하려는 화면의 이름
       } else {
         console.log('로그인 실패:', response.data);
       }
@@ -41,6 +42,10 @@ const Login = () => {
 
   const handleFindPassword = () => {
     console.log('비밀번호 찾기');
+  };
+
+  const handleJoin = () => {
+    navigation.navigate('Join'); // 'Join'은 이동하려는 회원가입 화면의 이름
   };
 
   return (
@@ -96,9 +101,10 @@ const Login = () => {
           <Image style={styles.snsIcon} source={require('@assets/images/icons/naver_icon.png')} />
           <Image style={styles.snsIcon} source={require('@assets/images/icons/kakao_icon.png')} />
         </View>
-        <View style={styles.signupContainer}>
-          <Text style={styles.signupText}>
-            ‘Reely’의 회원이 아니신가요? <Text style={styles.signupLink}>회원가입하기</Text>
+        <View style={styles.joinContainer}>
+          <Text style={styles.joinText}>
+            ‘Reely’의 회원이 아니신가요?{' '}
+            <Text style={styles.joinLink} onPress={handleJoin}>회원가입하기</Text>
           </Text>
         </View>
       </View>
@@ -205,16 +211,20 @@ const styles = StyleSheet.create({
     width: width * 0.13,
     height: width * 0.13,
   },
-  signupContainer: {
+  joinContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  signupText: {
+  joinText: {
     color: '#aaa',
     fontSize: 11,
   },
-  signupLink: {
+  joinLink: {
     textDecorationLine: 'underline',
     fontWeight: 'bold',
+    color: '#aaa',
+    fontSize: 11,
   },
 });
 
