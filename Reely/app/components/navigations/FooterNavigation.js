@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, Image } from 'react-native';
+import {User,Setting}  from '../screens/setting/Setting';
 
 // Placeholder screens
 const RecordScreen = () => (
@@ -23,10 +24,11 @@ const ArchiveScreen = () => (
     <Text>아카이브 화면</Text>
   </View>
 );
-const SettingsScreen = () => (
-  <View>
-    <Text>설정 화면</Text>
-  </View>
+
+const SettingScreen = () => (
+  <Setting>
+    <User/>
+  </Setting>
 );
 
 const Tab = createBottomTabNavigator();
@@ -50,7 +52,7 @@ const FooterNavigation = () => {
             아카이브: focused
               ? require('@assets/images/icons/archive_focused.png')
               : require('@assets/images/icons/archive.png'),
-            설정: focused
+            설정 : focused
               ? require('@assets/images/icons/setting_focused.png')
               : require('@assets/images/icons/setting.png'),
           };
@@ -78,13 +80,14 @@ const FooterNavigation = () => {
           marginBottom: 6,
         },
         tabBarLabelPosition: 'below-icon',
+        headerShown: false,
       })}
     >
       <Tab.Screen name="기록" component={RecordScreen} />
       <Tab.Screen name="검색" component={SearchScreen} />
       <Tab.Screen name="통계" component={StatsScreen} />
       <Tab.Screen name="아카이브" component={ArchiveScreen} />
-      <Tab.Screen name="설정" component={SettingsScreen} />
+      <Tab.Screen name="설정" component={SettingScreen} />
     </Tab.Navigator>
   );
 };
