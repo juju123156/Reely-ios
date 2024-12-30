@@ -49,8 +49,12 @@ const User = () => {
           <Text style={styles.userName}>노래하는톰하디</Text>
           <Text style={styles.userId}>minjupark</Text>
         </View>
-        <Image style={styles.settingsIcon} source={settingIcon} />
-      </View>
+        <TouchableOpacity onPress={() => navigation.navigate('ProfileChange')}>
+          <Image 
+            style={styles.settingsIcon} source={settingIcon}
+            />
+        </TouchableOpacity>
+          </View>
 
       {/* Divider와 Section */}
       <Divider style={styles.dividerSpace} />

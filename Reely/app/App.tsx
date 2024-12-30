@@ -1,7 +1,7 @@
 // App.tsx
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import AppNavigation from '@components/navigations/AppNavigation';
+import AppNavigation from '../app/components/navigations/AppNavigation.js';
 
 const App: React.FC = () => {
   return (
