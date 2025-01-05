@@ -8,14 +8,14 @@ const { width, height } = Dimensions.get('window');
 const ProfileChange = () => {
   const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { width, height }]}>
         {/* Profile Header */}
         <View style={styles.header}>
             {/* Back Arrow */}
             <TouchableOpacity onPress={() => navigation.goBack()}> 
                 <Image
                     style={styles.arrow}
-                    source={require('@assets/images/icons/backArrow.png')} // @assets 경로 사용
+                    source={require('@assets/images/icons/backArrow.png')}
                     alt="Back Arrow"
                 />
             </TouchableOpacity>
@@ -25,7 +25,7 @@ const ProfileChange = () => {
         {/* Avatar */}
         <Image
             style={styles.avatar}
-            source={require('@assets/images/icons/profileChange.png')} // @assets 경로 사용
+            source={require('@assets/images/icons/profileChange.png')}
             alt="Avatar"
         />
         
@@ -53,12 +53,9 @@ const ProfileChange = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
-    width: 393,
-    height: 852,
     backgroundColor: '#151515',
     overflow: 'hidden',
   },
-
   header: {
     position: 'absolute',
     left: width / 2 - 383 / 2, // 화면 너비를 기준으로 중앙 정렬
@@ -69,7 +66,6 @@ const styles = StyleSheet.create({
     //alignItems: 'flex-start',
     //gap: 10,
   },
-  
    arrow: {
      position: 'absolute',
      left: 25,
@@ -77,7 +73,6 @@ const styles = StyleSheet.create({
      width: 6,
      height: 17,
   },
-
   title: {
     position: 'absolute',
     left: width / 2 - 133 / 2, // 화면 너비를 기준으로 중앙 정렬
@@ -89,7 +84,6 @@ const styles = StyleSheet.create({
     color: '#eee',
     textAlign: 'center',
   },
-
   inputContainer: {
     alignItems: 'center',
     width: 333,
@@ -100,7 +94,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     gap: 10,
   },
-
   inputBox: {
     flex: 1,
     width: 333,
@@ -110,11 +103,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingVertical: 13,
-    borderBottomWidth: 1,
+    borderBottomWidth: 1.5,
     borderColor: '#444',
-    borderBottomWidth: 1,
   },
-
   label: {
     width: '100%',
     fontSize: 14,
@@ -123,7 +114,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#aaa',
   },
-
   usernameText: {
     fontSize: 14,
     lineHeight: 21,  // 14px의 1.5배
@@ -133,7 +123,6 @@ const styles = StyleSheet.create({
     color: '#eee',
     flexShrink: 1,
   },
-
   saveButtonContainer: {
     position: 'absolute',
     left: width / 2 - 333 / 2, // 화면 너비를 기준으로 중앙 정렬
@@ -145,7 +134,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#222',
     borderRadius: 3,
   },
-
   saveButtonText: {
     fontSize: 14,
     lineHeight: 21,
@@ -154,7 +142,6 @@ const styles = StyleSheet.create({
     color: '#888',
     textAlign: 'center',
   },
-
   avatar: {
     position: 'absolute',
     left: width / 2 - 110 / 2, // 화면 너비를 기준으로 중앙 정렬
@@ -162,7 +149,6 @@ const styles = StyleSheet.create({
     width: 110,
     height: 110,
   },
-
   progressBar: {
     position: 'absolute',
     left: width / 2 - 140 / 2, // 화면 너비를 기준으로 중앙 정렬
@@ -172,7 +158,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 100,
   },
-
   statusBar: {
     position: 'absolute',
     left: 20,
@@ -180,7 +165,6 @@ const styles = StyleSheet.create({
     width: 312,
     height: 35,
   },
-
   refreshIcon: {
     width: 13,
     height: 17,

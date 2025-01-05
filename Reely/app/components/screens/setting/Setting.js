@@ -30,15 +30,23 @@ const User = () => {
     setActiveSection(sectionName);
     // 해당 섹션에 따라 페이지 이동 처리
     if (sectionName === '이메일 변경') {
-      navigation.navigate('EmailChange'); // 'EmailChange'는 예시, 실제 페이지 이름으로 바꿔야 함
+      navigation.navigate('EmailChange');
     } else if (sectionName === '비밀번호 변경') {
-      navigation.navigate('PasswordChange'); // 'PasswordChange'는 예시, 실제 페이지 이름으로 바꿔야 함
+      navigation.navigate('PasswordChange');
     } else if (sectionName === '사용자 데이터') {
-      navigation.navigate('UserData'); // 'UserData'는 예시, 실제 페이지 이름으로 바꿔야 함
+      navigation.navigate('UserData');
     } else if (sectionName === '로그아웃') {
-      navigation.navigate('Logout'); // 'Logout'은 예시, 실제 페이지 이름으로 바꿔야 함
+      navigation.navigate('Logout');
+    } else if (sectionName === '알림 설정') {
+      navigation.navigate('AlertSetting');
+    } else if (sectionName === 'FAQ') {
+      navigation.navigate('FAQ');
+    } else if (sectionName === '약관') {
+      navigation.navigate('TermsOfService');
+    } else if (sectionName === '서비스 정보') {
+      navigation.navigate('ServiceInfo');
     }
-  };
+  }; 
 
   return (
     <Setting>
