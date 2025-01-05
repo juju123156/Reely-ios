@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
+import axios from 'axios';  // axios 임포트
 import { useNavigation } from '@react-navigation/native';
+import Config from 'react-native-config';
 
 // 화면의 너비와 높이 구하기
 const { width, height } = Dimensions.get('window');
@@ -9,8 +11,10 @@ const Join = () => {
   const [memberId, setMemberId] = useState('');  // 아이디
   const [memberPwd, setMemberPwd] = useState('');  // 비밀번호
   const [memberEmail, setMemberEmail] = useState('');  // 이메일
-  const [isIdValid, setIsIdValid] = useState(true);  // 아이디 유효성 상태
-  const [isPwdValid, setIsPwdValid] = useState(true);  // 비밀번호 유효성 상태
+  const [isIdValid, setIsIdValid] = useState(false);  // 아이디 유효성 상태
+  const [isPwdValid, setIsPwdValid] = useState(false);  // 비밀번호 유효성 상태
+  const [idErrorMsg, setIdErrorMsg] = useState('');  // 아이디 에러문
+  const [pwdErrorMsg, setPwdErrorMsg] = useState('');  // 비밀번호 에러문
   const navigation = useNavigation();
 
   // 뒤로가기
@@ -19,18 +23,59 @@ const Join = () => {
   };
 
   // 회원가입
-  const handleJoinPress = () => {
-    console.log('join');
+  const handleJoinPress = async () => {
+    try {
+      if (!(isIdValid && isPwdValid)) {
+        return;
+      }
+      
+      console.log(memberId);
+      console.log(memberPwd);
+      console.log(memberEmail);
+      console.log('join');
+
+      const params = {
+        memberId,
+        memberPwd,
+        memberEmail,
+      };
+  
+      const response = await axios.post(`${Config.BASE_URL}/api/auth/join`, params);
+      if (response.status === 200) {
+        console.log('회원가입 성공:', response.data);
+        navigation.navigate('Login'); // 'Login'은 이동하려는 화면의 이름
+      } else {
+        console.log('회원가입 실패:', response.data);
+      }
+    } catch (e) {
+      console.error('회원가입 중 오류 발생:', e);
+    }
   };
 
   // 아이디 유효성 검사
   const validateId = (id) => {
-    return id.length >= 6 && id.length <= 12;  // 간단한 길이 검사
+    setIdErrorMsg('');
+    if (id.length >= 6 && id.length <= 12) {
+      return true;
+    } else if (id.length === 0) {
+      return false;
+    } else {
+      setIdErrorMsg('6~12자의 영문 소문자, 숫자만 가능합니다.');
+      return false;
+    }
   };
 
   // 비밀번호 유효성 검사
   const validatePwd = (pwd) => {
-    return pwd.length >= 8 && pwd.length <= 20;  // 간단한 길이 검사
+    setPwdErrorMsg('');
+    if (pwd.length >= 8 && pwd.length <= 20) {
+      return true;
+    } else if (pwd.length === 0) {
+      return false;
+    } else {
+      setPwdErrorMsg('8~20자의 영문, 숫자, 특수문자만 가능합니다.');
+      return false;
+    }
   };
 
   const handleIdChange = (id) => {
@@ -41,6 +86,25 @@ const Join = () => {
   const handlePwdChange = (pwd) => {
     setMemberPwd(pwd);
     setIsPwdValid(validatePwd(pwd));
+  };
+ 
+  const handleEmailChange = (email) => {
+    setMemberEmail(email);
+  };
+  // 아이디 중복검사
+  const handleIdDupChecked = async () => {
+    if (isIdValid) {
+      try {
+        const response = await axios.post(`${Config.BASE_URL}/api/auth/join`, { memberId });
+        if (response.status === 200) {
+          
+        } else {
+          console.log('중복검사 실패:', response.data);
+        }
+      } catch (e) {
+        console.error('아이디 중복검사 중 오류 발생', e);
+      }
+    }
   };
 
   return (
@@ -54,65 +118,74 @@ const Join = () => {
       <View style={styles.form}>
         <View style={styles.formGroup}>
           <Text style={styles.label}>아이디</Text>
-          <View style={styles.inputWithIcon}>
-            <TextInput
-              style={styles.input}
-              placeholder="아이디 영문 소문자, 숫자 6~12자"
-              placeholderTextColor="#444"
-              value={memberId}
-              onChangeText={handleIdChange}
-            />
-            {memberId && !isIdValid && (
-              <Image
-                style={styles.icon}
-                width={15}
-                height={15}
-                source={require('@assets/images/icons/wrong_icon.png')}
+          <View>
+            <View style={styles.inputWithIcon}>
+              <TextInput
+                style={styles.input}
+                placeholder="아이디 영문 소문자, 숫자 6~12자"
+                placeholderTextColor="#444"
+                autoCapitalize="none"
+                value={memberId}
+                onChangeText={handleIdChange}
+                onBlur={handleIdDupChecked}
               />
-            )}
-            {memberId && isIdValid && (
-              <Image
-                style={styles.icon}
-                width={15}
-                height={15}
-                source={require('@assets/images/icons/confirm_icon.png')} // confirm icon when valid
-              />
-            )}
+              {memberId && !isIdValid && (
+                <Image
+                  style={styles.icon}
+                  width={15}
+                  height={15}
+                  source={require('@assets/images/icons/wrong_icon.png')}
+                />
+              )}
+              {memberId && isIdValid && (
+                <Image
+                  style={styles.icon}
+                  width={15}
+                  height={15}
+                  source={require('@assets/images/icons/confirm_icon.png')} // confirm icon when valid
+                />
+              )}
+            </View>
+            <Text style={styles.errorText}>{idErrorMsg}</Text>
           </View>
         </View>
         <View style={styles.formGroup}>
           <Text style={styles.label}>비밀번호</Text>
-          <View style={styles.inputWithIcon}>
-            <TextInput
-              style={styles.input}
-              placeholder="비밀번호 영문, 숫자, 특수문자 8~20자"
-              placeholderTextColor="#444"
-              secureTextEntry={true}
-              value={memberPwd}
-              onChangeText={handlePwdChange}
-            />
-            {memberPwd && !isPwdValid && (
-              <Image
-                style={styles.icon}
-                width={15}
-                height={15}
-                source={require('@assets/images/icons/wrong_icon.png')}
+          <View>
+            <View style={styles.inputWithIcon}>
+              <TextInput
+                style={styles.input}
+                placeholder="비밀번호 영문, 숫자, 특수문자 8~20자"
+                placeholderTextColor="#444"
+                autoCapitalize="none"
+                secureTextEntry={true}
+                value={memberPwd}
+                onChangeText={handlePwdChange}
               />
-            )}
-            {memberPwd && isPwdValid && (
+              {memberPwd && !isPwdValid && (
+                <Image
+                  style={styles.icon}
+                  width={15}
+                  height={15}
+                  source={require('@assets/images/icons/wrong_icon.png')}
+                />
+              )}
+              {memberPwd && isPwdValid && (
+                <Image
+                  style={styles.icon}
+                  width={15}
+                  height={15}
+                  source={require('@assets/images/icons/confirm_icon.png')} // confirm icon when valid
+                />
+              )}
               <Image
-                style={styles.icon}
+                style={[styles.icon, memberPwd ? styles.iconShift : '']}
                 width={15}
-                height={15}
-                source={require('@assets/images/icons/confirm_icon.png')} // confirm icon when valid
+                height={18}
+                source={require('@assets/images/icons/union.png')}
               />
-            )}
-            <Image
-              style={[styles.icon, memberPwd ? styles.iconShift : '']}
-              width={15}
-              height={18}
-              source={require('@assets/images/icons/union.png')}
-            />
+            </View>
+            <Text style={styles.errorText}>{pwdErrorMsg}</Text>
           </View>
         </View>
         <View style={styles.formGroup}>
@@ -122,7 +195,9 @@ const Join = () => {
               style={styles.inputEmail}
               placeholder="이메일 입력"
               placeholderTextColor="#444"
+              autoCapitalize="none"
               value={memberEmail}
+              onChangeText={handleEmailChange}
             />
             <TouchableOpacity style={styles.verifyButton}>
               <Text style={styles.verifyButtonText}>인증번호 전송</Text>
@@ -181,12 +256,19 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   formGroup: {
-    marginBottom: 25,
+    marginBottom: 15,
   },
   label: {
     fontSize: 14,
     color: '#aaa',
     fontWeight: 'bold',
+  },
+  errorText: {
+    fontSize: 11,
+    fontFamily: 'Pretendard',
+    color: '#ed7373',
+    marginLeft: 10,
+    bottom: 5,
   },
   input: {
     height: 35,
