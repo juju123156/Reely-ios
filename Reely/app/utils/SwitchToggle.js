@@ -1,4 +1,3 @@
-// SwitchToggle.js
 import React, { useState } from 'react';
 import { Animated, Easing, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
