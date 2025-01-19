@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   sectionTitle: {
+    width: '30%',
     fontSize: 15,
     fontFamily: 'Pretendard',
     color: '#EEEEEE',
@@ -134,24 +135,26 @@ const styles = StyleSheet.create({
   activeText: {
     color: '#ED7373',
   },
+  infoBox: {
+    width: '70%',
+    flexDirection: 'row', // 수직 정렬
+    alignItems: 'center', // 왼쪽 정렬
+    justifyContent: 'flex-end',
+    paddingHorizontal: 10,  // 아이콘과 텍스트 사이의 간격을 설정
+  },
   infoText: {
-    width: 40,
+    width: 50,
     fontSize: 11,
     lineHeight: 16.5,
     fontFamily: 'Pretendard',
     color: '#666',
-    //flexDirection: 'row',
+    textAlign: 'left',
+    flexDirection: 'row',
     //alignItems: '',
     //paddingHorizontal: 10,
   },
-  infoBox: {
-    width: 340,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingHorizontal: 200,
-  },
   icon: {
+    //flex: 1,
     width: 10,
     height: 12,
   },
