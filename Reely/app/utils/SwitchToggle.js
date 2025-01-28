@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Animated, Easing, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 
-const SwitchToggle = ({ isOn, onToggle, onColor = '#246DFB', offColor = '#E8E8E9' }) => {
+const SwitchToggle = ({ isOn, onToggle, onColor = '#005EFF', offColor = '#444444', onWheelColor = '#FFFFFF', offWheelColor = '#888888' }) => {
   const [aniValue, setAniValue] = useState(new Animated.Value(0));
   const color = isOn ? onColor : offColor;
+  const wheelColor = isOn ? onWheelColor : offWheelColor;
 
   // 애니메이션으로 스위치 바퀴의 위치를 이동
   const moveSwitchToggle = aniValue.interpolate({
@@ -26,7 +27,9 @@ const SwitchToggle = ({ isOn, onToggle, onColor = '#246DFB', offColor = '#E8E8E9
     <Wrap>
       <Pressable onPress={onToggle}>
         <ToggleContainer style={{ backgroundColor: color }}>
-          <ToggleWheel style={[styles.toggleWheel, { transform: [{ translateX: moveSwitchToggle }] }]} />
+          <ToggleWheel style={[styles.toggleWheel, { 
+                                                      transform: [{ translateX: moveSwitchToggle }] 
+                                                      , backgroundColor : wheelColor}]} />
         </ToggleContainer>
       </Pressable>
     </Wrap>
@@ -49,17 +52,18 @@ const ToggleContainer = styled.View`
   border-radius: 15px;
   justify-content: center;
 `;
-
+ 
 const ToggleWheel = styled(Animated.View)`
   width: 25px;
   height: 25px;
-  background-color: white;
+  background-color: #888888;
   border-radius: 12.5px;
 `;
 
 const styles = StyleSheet.create({
   toggleWheel: {
     shadowColor: '#000',
+    backgroundColor: '#888888',
     shadowOffset: {
       width: 0,
       height: 2,

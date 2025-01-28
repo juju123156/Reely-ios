@@ -40,7 +40,7 @@ const User = () => {
     } else if (sectionName === '알림 설정') {
       navigation.navigate('AlertSetting');
     } else if (sectionName === 'FAQ') {
-      navigation.navigate('FAQ');
+      navigation.navigate('Faq');
     } else if (sectionName === '약관') {
       navigation.navigate('TermsOfService');
     } else if (sectionName === '서비스 정보') {
@@ -62,7 +62,7 @@ const User = () => {
             style={styles.settingsIcon} source={settingIcon}
             />
         </TouchableOpacity>
-          </View>
+      </View>
 
       {/* Divider와 Section */}
       <Divider style={styles.dividerSpace} />

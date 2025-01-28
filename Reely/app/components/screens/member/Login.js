@@ -23,8 +23,8 @@ const Login = () => {
         keepLoggedIn,
       };
 
-      const response = await axios.post(`${Config.BASE_URL}/api/auth/login`, params);
-
+      const response = await axios.post(`http://localhost:8080/api/auth/login`, params);
+//${Config.BASE_URL}
       if (response.status === 200) {
         console.log('로그인 성공:', response.data);
         navigation.navigate('Main'); // 'Main'은 이동하려는 화면의 이름
