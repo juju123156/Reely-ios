@@ -95,9 +95,13 @@ const Join = () => {
   const handleIdDupChecked = async () => {
     if (isIdValid) {
       try {
-        const response = await axios.post(`${Config.BASE_URL}/api/auth/join`, { memberId });
+        const response = await axios.post(`${Config.BASE_URL}/api/member/duplicate-id`, { memberId });
         if (response.status === 200) {
-          
+          // 아이디 존재하면 true
+          if(response.data) {
+            setIsIdValid(false);
+            setIdErrorMsg('이미 존재하는 아이디입니다.');
+          }
         } else {
           console.log('중복검사 실패:', response.data);
         }
