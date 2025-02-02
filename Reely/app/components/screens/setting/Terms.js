@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Alert, View, Text, Image, StyleSheet, TouchableWithoutFeedback, Dimensions, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableWithoutFeedback, Dimensions, FlatList, ActivityIndicator } from 'react-native';
 import Config from 'react-native-config';
 import axios from 'axios';  // axios 임포트
 
 const { width, height } = Dimensions.get('window');
 
-const Faq = () => {
+const Terms = () => {
     const navigation = useNavigation();
     const [faqData, setFaqData] = useState([]);  // 받아온 FAQ 데이터를 상태로 저장
     const [loading, setLoading] = useState(true); // 데이터 로딩 상태 관리
     const [error, setError] = useState(null);     // 에러 상태 관리
-    const [expandedIndex, setExpandedIndex] = useState(null); // 확장여부 관리
 
     // 백엔드 API에서 FAQ 데이터를 받아오는 함수
     const fetchFaqData = async () => {
         try {
-            
-            Alert.alert(`${Config.BASE_URL}`);
-            const response = await axios.get(`${Config.BASE_URL}/setting/faq/getFaqList`); // 실제 API URL로 변경
-            
+            const response = await axios.get(`${Config.BASE_URL}/setting/terms/getTermsList`); // 실제 API URL로 변경
             if (response.status !== 200) {
                 throw new Error('Failed to fetch data');
             }else {
@@ -73,7 +69,7 @@ const Faq = () => {
                         alt="Back Arrow"
                     />
                 </TouchableWithoutFeedback>
-                <Text style={styles.title}>FAQ</Text>
+                <Text style={styles.title}>Terms</Text>
             </View>
 
             {/* FAQ 목록 출력 */}
@@ -186,4 +182,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Faq;
+export default Terms;

@@ -9,6 +9,7 @@ import PasswordChangeScreen from '@components/screens/setting/PasswordChange';
 import UserDataScreen from '@components/screens/setting/UserData';
 import AlertSettingScreen from '@components/screens/setting/AlertSetting';
 import FaqScreen from '@components/screens/setting/Faq';
+import TermsScreen from '@components/screens/setting/Terms';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,7 @@ const AppNavigation = () => {
         <Stack.Screen name="UserData" component={UserDataScreen} />
         <Stack.Screen name="AlertSetting" component={AlertSettingScreen} />
         <Stack.Screen name="Faq" component={FaqScreen} />
+        <Stack.Screen name="Terms" component={TermsScreen} />
       </Stack.Navigator>
   );
 };

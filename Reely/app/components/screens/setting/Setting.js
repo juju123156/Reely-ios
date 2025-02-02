@@ -42,9 +42,9 @@ const User = () => {
     } else if (sectionName === 'FAQ') {
       navigation.navigate('Faq');
     } else if (sectionName === '약관') {
-      navigation.navigate('TermsOfService');
+      navigation.navigate('Terms');
     } else if (sectionName === '서비스 정보') {
-      navigation.navigate('ServiceInfo');
+      navigation.navigate('Terms');
     }
   }; 
 
