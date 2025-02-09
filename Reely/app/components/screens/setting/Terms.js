@@ -2,35 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, Image, StyleSheet, TouchableWithoutFeedback, Dimensions, FlatList, ActivityIndicator } from 'react-native';
 import Config from 'react-native-config';
-import axios from 'axios';  // axios 임포트
+import axios from 'axios';
 
 const { width, height } = Dimensions.get('window');
 
 const Terms = () => {
     const navigation = useNavigation();
-    const [faqData, setFaqData] = useState([]);  // 받아온 FAQ 데이터를 상태로 저장
-    const [loading, setLoading] = useState(true); // 데이터 로딩 상태 관리
-    const [error, setError] = useState(null);     // 에러 상태 관리
+    const [faqData, setTermsData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // 백엔드 API에서 FAQ 데이터를 받아오는 함수
-    const fetchFaqData = async () => {
+    const fetchTermsData = async () => {
         try {
-            const response = await axios.get(`${Config.BASE_URL}/setting/terms/getTermsList`); // 실제 API URL로 변경
+            const response = await axios.get(`${Config.BASE_URL}/setting/terms/getTermsList`);
             if (response.status !== 200) {
                 throw new Error('Failed to fetch data');
-            }else {
-            const data = response.data;  // axios는 response.data에 데이터가 있음
-            setFaqData(data);  // 데이터를 상태에 저장
+            } else {
+                const data = response.data;
+                setTermsData(data);
             }
         } catch (error) {
-            setError(error.message || 'An error occurred');  // 에러 발생 시 에러 메시지 저장
+            setError(error.message || 'An error occurred');
         } finally {
-            setLoading(false);  // 데이터 로딩 완료
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchFaqData();  // 컴포넌트가 마운트될 때 API 호출
+        fetchTermsData();
     }, []);
 
     if (loading) {
@@ -49,47 +48,36 @@ const Terms = () => {
         );
     }
 
-    const toggleContents = (index) => {
-        // 클릭된 index가 확장된 상태면 닫기
-        if (expandedIndex === index) {
-            setExpandedIndex(null);
-        }else {
-            setExpandedIndex(index);
-        }
-    }
-
     return (
         <View style={styles.container}>
-            {/* Profile Header */}
+            {/* 헤더 부분 */}
             <View style={styles.header}>
                 <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
                     <Image
                         style={styles.arrow}
                         source={require('@assets/images/icons/backArrow.png')}
-                        alt="Back Arrow"
                     />
                 </TouchableWithoutFeedback>
-                <Text style={styles.title}>Terms</Text>
+                <Text style={styles.title}>약관</Text>
             </View>
 
-            {/* FAQ 목록 출력 */}
+            {/* 약관 목록 출력 */} 
             <FlatList
                 data={faqData}
-                keyExtractor={(item, index) => item.id ? item.faqId.toString() : index.toString()} // 각 항목에 고유 키 지정
-                renderItem={({ item, index }) => (
-                    <TouchableWithoutFeedback onPress={() => toggleContents(index)}>
+                keyExtractor={(item, index) => item.id ? item.termsId.toString() : index.toString()}
+                renderItem={({ item }) => (
+                    <TouchableWithoutFeedback onPress={() => navigation.navigate('TermsDetail', {
+                        termsTitle: item.termsTitle,
+                        termsContents: item.termsContents,
+                    })}>
                         <View style={styles.section}>
-                            
-                                <View style={styles.sectionHeader}>
-                                    <Text style={styles.sectionText}>{item.faqTitle}</Text>
-                                </View>
-                            
-                            {/* 확장된 항목만 보여줌 */}
-                            {expandedIndex === index &&(
-                                <View style={styles.sectionHiddenHeader}>
-                                    <Text style={styles.sectionInfoText}>{item.faqContents}</Text>
-                                </View>
-                            )}
+                            <View style={styles.sectionHeader}>
+                                <Text style={styles.sectionText}>{item.termsTitle}</Text>
+                                <Image
+                                    source={require('@assets/images/icons/arrow.png')} // 아이콘 이미지 경로 수정
+                                    style={styles.icon}
+                                />
+                            </View>
                         </View>
                     </TouchableWithoutFeedback>
                 )}
@@ -142,26 +130,9 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 10,
     },
-    sectionHiddenHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: '#111111',
-        marginTop: 10,
-        marginBottom: 10,
-    },
     sectionText: {
         fontSize: 16,
         color: '#eee',
-    },
-    sectionInfoText: {
-        borderTopWidth: 0.5,    // 위쪽 테두리
-        borderBottomWidth: 0.5, // 아래쪽 테두리
-        borderLeftWidth: 0,     // 왼쪽 테두리 없음
-        borderRightWidth: 0,    // 오른쪽 테두리 없음
-        fontSize: 13,
-        color : '#FFFFFF',
-        textAlign: 'left',
     },
     divider: {
         backgroundColor: '#333',
@@ -179,6 +150,10 @@ const styles = StyleSheet.create({
         borderColor: '#222222',
         borderTopWidth: 0.5,
         borderBottomWidth: 0.5,
+    },
+    icon: {
+        width: 9,
+        height: 9,
     },
 });
 

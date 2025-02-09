@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Alert, View, Text, Image, StyleSheet, TouchableWithoutFeedback, Dimensions, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableWithoutFeedback, Dimensions, FlatList, ActivityIndicator } from 'react-native';
 import Config from 'react-native-config';
 import axios from 'axios';  // axios 임포트
 
@@ -17,7 +17,6 @@ const Faq = () => {
     const fetchFaqData = async () => {
         try {
             
-            Alert.alert(`${Config.BASE_URL}`);
             const response = await axios.get(`${Config.BASE_URL}/setting/faq/getFaqList`); // 실제 API URL로 변경
             
             if (response.status !== 200) {

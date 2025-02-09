@@ -44,7 +44,7 @@ const User = () => {
     } else if (sectionName === '약관') {
       navigation.navigate('Terms');
     } else if (sectionName === '서비스 정보') {
-      navigation.navigate('Terms');
+      navigation.navigate('ServiceInfo');
     }
   }; 
 
