@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 const TermsDetail = ({ route }) => {
+    const navigation = useNavigation();
     const { termsTitle, termsContents } = route.params; // 네비게이션을 통해 전달된 데이터
 
     return (

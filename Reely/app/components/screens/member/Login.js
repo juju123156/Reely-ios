@@ -3,10 +3,12 @@ import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Switch, Ale
 import axios from 'axios';  // axios 임포트
 import { useNavigation } from '@react-navigation/native';
 import Config from 'react-native-config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const navigation = useNavigation();  // useNavigation 훅을 사용하여 네비게이션 객체 가져오기
   const [memberId, setMemberId] = useState('');  // 아이디
+  const [memberEmail, setMemberEmail] = useState('');  // 이메일
   const [memberPwd, setMemberPwd] = useState('');  // 비밀번호
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);  // 로그인 상태 유지 여부
 
@@ -27,6 +29,14 @@ const Login = () => {
 
       if (response.status === 200) {
         console.log('로그인 성공:', response.data);
+       //const userInfo = await response.json();
+        // 데이터 저장
+        try {
+          await AsyncStorage.setItem('userInfo', JSON.stringify(response.data));
+        } catch (error) {
+          console.error('사용자 정보 저장 실패:', error);
+        }
+
         navigation.navigate('Main'); // 'Main'은 이동하려는 화면의 이름
       } else {
         console.log('로그인 실패:', response.data);
