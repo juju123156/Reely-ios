@@ -33,6 +33,7 @@ const Join = () => {
       console.log(memberPwd);
       console.log(memberEmail);
       console.log('join');
+      console.log('수정수정');
 
       const params = {
         memberId,
