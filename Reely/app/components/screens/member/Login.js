@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Switch, Alert, Dimensions } from 'react-native';
-import axios from 'axios';  // axios 임포트
 import { useNavigation } from '@react-navigation/native';
-import Config from 'react-native-config';
+import * as Keychain from 'react-native-keychain';
+import api from '@utils/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
@@ -22,19 +22,26 @@ const Login = () => {
       const params = {
         memberId,
         memberPwd,
-        keepLoggedIn,
       };
 
-      const response = await axios.post(`${Config.BASE_URL}/api/auth/login`, params);
+      const response = await api.post(`/api/auth/login`, params);
 
       if (response.status === 200) {
-        console.log('로그인 성공:', response.data);
-       //const userInfo = await response.json();
+        const tokens = response.data;
         // 데이터 저장
         try {
-          await AsyncStorage.setItem('userInfo', JSON.stringify(response.data));
+          // 엑세스 토큰 저장
+          await AsyncStorage.setItem('accessToken', tokens.accessToken);
+          await Keychain.setGenericPassword('user' , tokens.refreshToken, {
+            service: "com.Reely.auth",
+            accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED, // 잠금 해제 시 접근 가능
+          });
+
+          const refreshToken = await Keychain.getGenericPassword();
+          console.log(refreshToken);
+          console.log('Tokens stored securely!');
         } catch (error) {
-          console.error('사용자 정보 저장 실패:', error);
+          console.error('Error storing tokens', error);
         }
 
         navigation.navigate('Main'); // 'Main'은 이동하려는 화면의 이름
