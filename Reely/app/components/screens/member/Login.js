@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Switch, Alert, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Keychain from 'react-native-keychain';
-import api from '@utils/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '@utils/api';
+
 
 const Login = () => {
   const navigation = useNavigation();  // useNavigation 훅을 사용하여 네비게이션 객체 가져오기
@@ -14,6 +15,8 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
+      let memberId="test001"
+      let memberPwd="test1234"
       console.log('로그인 시도:', memberId, memberPwd);
       if (!(memberId && memberPwd)) {
         Alert.alert('아이디와 비밀번호를 입력해주세요.');

@@ -5,6 +5,8 @@
  * @format
  */
 
+const path = require('path');
+
 module.exports = {
   transformer: {
     getTransformOptions: async () => ({
@@ -16,5 +18,10 @@ module.exports = {
         inlineRequires: true,
       },
     }),
+  },
+  resolver: {
+    extraNodeModules: {
+      '@ui': path.resolve(__dirname, 'app/components/ui')
+    }
   },
 };

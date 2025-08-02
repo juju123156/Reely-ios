@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, Image } from 'react-native';
 import {User,Setting}  from '../screens/setting/Setting';
+import Search from '../screens/movie/Search';
 
 // Placeholder screens
 const RecordScreen = () => (
@@ -75,7 +76,7 @@ const FooterNavigation = () => {
         },
         tabBarLabelStyle: {
           fontSize: 9,
-          fontFamily: 'Pretendard',
+          fontFamily: 'Pretendard-Regular',
           marginTop: 8,
           marginBottom: 6,
         },
@@ -84,7 +85,7 @@ const FooterNavigation = () => {
       })}
     >
       <Tab.Screen name="기록" component={RecordScreen} />
-      <Tab.Screen name="검색" component={SearchScreen} />
+      <Tab.Screen name="검색" component={Search} />
       <Tab.Screen name="통계" component={StatsScreen} />
       <Tab.Screen name="아카이브" component={ArchiveScreen} />
       <Tab.Screen name="설정" component={SettingScreen} />
