@@ -12,6 +12,7 @@ import FaqScreen from '@components/screens/setting/Faq';
 import TermsScreen from '@components/screens/setting/Terms';
 import TermsDetailScreen from '@components/screens/setting/TermsDetail';
 import ServiceInfoScreen from '@components/screens/setting/ServiceInfo';
+import MovieDetailScreen from '@components/screens/movie/MovieDetail';
 
 
 const Stack = createStackNavigator();
@@ -32,6 +33,7 @@ const AppNavigation = () => {
         <Stack.Screen name="Terms" component={TermsScreen} />
         <Stack.Screen name="TermsDetail" component={TermsDetailScreen} />
         <Stack.Screen name="ServiceInfo" component={ServiceInfoScreen} />
+        <Stack.Screen name="MovieDetail" component={MovieDetailScreen} />
       </Stack.Navigator>
   );
 };

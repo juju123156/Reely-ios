@@ -49,23 +49,22 @@ const Search = () => {
       return;
     }
     
-    //setSearchText(text);
     setIsSearching(true);
     await saveRecentSearch(text);
       
     try {
       const encodedText = encodeURIComponent(text);
       const token = await AsyncStorage.getItem('accessToken');
-      const response = await axios.get(`${Config.BASE_URL}/api/getMovieInfo/${encodedText}`, {
+      const response = await axios.get(`${Config.BASE_URL}/api/getMoviesInfo/${encodedText}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
-            //'Accept': 'application/json'
           }
       });
-      const url = `${Config.BASE_URL}/api/getMovieInfo/${text}`;
+      const url = `${Config.BASE_URL}/api/getMoviesInfo/${text}`;
       Alert.alert('🔍 요청 URL', url);  // 요청 URL 확인용
-      setSearchResults(response.data); // 서버에서 받은 데이터를 상태에 저장
+      const searchData = response.data;
+      setSearchResults(Array.isArray(searchData) ? searchData : []); // 서버에서 받은 데이터를 상태에 저장
     } catch (error) {
       console.error('검색 API 호출 실패:', error);
       setSearchResults([]); // 실패 시 빈 배열 처리
