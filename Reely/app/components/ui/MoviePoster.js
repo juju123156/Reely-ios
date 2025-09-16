@@ -1,14 +1,24 @@
 import React from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import Config from 'react-native-config';
 
 const MoviePoster = ({ imageUrl, onPress, style }) => {
+  const [error, setError] = React.useState(false);
+  const resolvedUrl = React.useMemo(() => {
+    if (!imageUrl) return null;
+    if (/^https?:\/\//i.test(imageUrl)) return imageUrl;
+    const base = (Config?.BASE_URL || '').replace(/\/$/, '');
+    const path = imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
+    return `${base}${path}`;
+  }, [imageUrl]);
   return (
     <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
-      {imageUrl ? (
+      {resolvedUrl && !error ? (
         <Image 
-          source={{ uri: imageUrl }} 
+          source={{ uri: resolvedUrl }} 
           style={styles.image}
           resizeMode="cover"
+          onError={() => setError(true)}
         />
       ) : (
         <View style={styles.placeholder} />
